@@ -1,0 +1,58 @@
+body {
+    font-family: Inter, Arial, Helvetica, sans-serif;
+    background: #f6f8fb;
+    color: #222
+}
+
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(10, 10, 20, 0.06)
+}
+
+textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px
+}
+
+label {
+    display: block;
+    margin-top: 12px
+}
+
+.actions {
+    margin-top: 12px
+}
+
+button {
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: none;
+    background: #1366d6;
+    color: #fff;
+    cursor: pointer;
+    margin-right: 8px
+}
+
+.card {
+    padding: 12px;
+    border-radius: 8px;
+    background: #f1f5fa;
+    margin-top: 12px
+}
+
+.mono {
+    font-family: monospace;
+    white-space: pre-wrap
+}
+
+.muted {
+    color: #666;
+    font-size: 13px
+}

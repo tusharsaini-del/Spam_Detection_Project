@@ -1,0 +1,76 @@
+<html lang="en">
+<div class="container">
+    <h1 id="title">Spam Detector</h1>
+
+
+    <form id="predictForm" action="/predict" method="post" target="_blank">
+        <label for="message">Enter message to check:</label>
+        <textarea id="message" name="message" rows="6" placeholder="Type or paste text here..."></textarea>
+
+
+        <label for="lang">Language (UI only):</label>
+        <select id="lang" name="lang">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+            <option value="es">Español (Spanish)</option>
+        </select>
+
+
+        <div class="actions">
+            <button type="submit">Check in new tab</button>
+            <button type="button" id="apiBtn">Check (AJAX)</button>
+        </div>
+    </form>
+
+
+    <div id="ajaxResult" class="card" style="display:none"></div>
+
+
+    <hr>
+    <p class="muted">Notes: model is trained on a tiny built-in dataset — replace with real dataset for production.</p>
+</div>
+
+
+<script>
+    // Small multilingual UI strings (front-end only)
+    const i18n = {
+        en: { title: 'Spam Detector', placeholder: 'Type or paste text here...' },
+        hi: { title: 'स्पैम डिटेक्टर', placeholder: 'यहाँ टेक्स्ट टाइप या पेस्ट करें...' },
+        es: { title: 'Detector de Spam', placeholder: 'Escriba o pegue el texto aquí...' }
+    };
+
+
+    const langSelect = document.getElementById('lang');
+    const title = document.getElementById('title');
+    const message = document.getElementById('message');
+
+
+    function updateLang() {
+        const l = langSelect.value || 'en';
+        title.textContent = i18n[l].title;
+        message.placeholder = i18n[l].placeholder;
+    }
+    langSelect.addEventListener('change', updateLang);
+    updateLang();
+
+
+    // AJAX API call
+    document.getElementById('apiBtn').addEventListener('click', async () => {
+        const text = message.value;
+        if (!text.trim()) { alert('Please type a message'); return; }
+        const res = await fetch('/api/predict', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text })
+        });
+        const out = document.getElementById('ajaxResult');
+        if (!res.ok) {
+            out.style.display = 'block'; out.innerText = 'Error: ' + (await res.text()); return;
+        }
+        const j = await res.json();
+        out.style.display = 'block';
+        out.innerHTML = `<strong>Prediction:</strong> ${j.prediction} <br><strong>Probability:</strong> ${(j.probability * 100).toFixed(2)}% <br><strong>Text:</strong> ${j.text}`;
+    });
+</script>
+</body>
+
+</html>
